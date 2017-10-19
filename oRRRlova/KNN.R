@@ -98,7 +98,7 @@ mc.draw.KNN = function(points, classes, colors, k) {
 
 #тестируем программу
 test = function() {
-    petals = iris[, 1:2]
+    petals = iris[, 3:4]
     petalNames = iris[, 5]
 
     par(mfrow = c(1, 2))
