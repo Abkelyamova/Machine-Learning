@@ -108,6 +108,6 @@ test = function() {
     petalNames = iris[, 5]
 
     par(mfrow = c(1, 2))
-    h = mc.draw.LOO.PW(petals, petalNames, hValues = seq(0.1, 2, 0.005))
+    h = mc.draw.LOO.PW(petals, petalNames, hValues = seq(0.1, 2, 0.00))
     mc.draw.PW(petals, petalNames, colors = c("red", "green3", "blue"), h = h)
 }
