@@ -2,20 +2,20 @@
 source("help.R")
 
 #kwKNN
-mc.KNN.w = function(i, k) +(i <= k) * (k + 1 - i) / k
+mc.kwKNN.w = function(i, k) +(i <= k) * (k + 1 - i) / k
 
-mc.KNN = function(sortedDistances, k) {
+mc.kwKNN = function(sortedDistances, k) {
     orderedDistances = 1:length(sortedDistances)
     names(orderedDistances) = names(sortedDistances)
 
-    weights = mc.KNN.w(orderedDistances, k)
+    weights = mc.kwKNN.w(orderedDistances, k)
     weightsByClass = sapply(unique(names(weights)), mc.sumByClass, weights)
 
     bestClass = names(which.max(weightsByClass))
 }
 
 #LOO
-mc.LOO.KNN = function(points, classes) {
+mc.LOO.kwKNN = function(points, classes) {
     n = dim(points)[1]
     loo = rep(0, n-1) #n-1, потому что один элемент всегда будет отсутствовать в выборке
 
@@ -28,7 +28,7 @@ mc.LOO.KNN = function(points, classes) {
         sortedDistances = sort(distances)
 
         for (k in 1:(n-1)) {
-            classified = mc.KNN(sortedDistances, k)
+            classified = mc.kwKNN(sortedDistances, k)
             loo[k] = loo[k] + (classified != classes[i])
         }
     }
@@ -37,13 +37,13 @@ mc.LOO.KNN = function(points, classes) {
 }
 
 #Отрисовка LOO
-mc.draw.LOO.KNN = function(points, classes) {
-    loo = mc.LOO.KNN(points, classes)
+mc.draw.LOO.kwKNN = function(points, classes) {
+    loo = mc.LOO.kwKNN(points, classes)
 
     x = 1:length(loo)
     y = loo
 
-    plot(x, y, type = "l", main = "LOO для взвешанного KNN", xlab = "K", ylab = "LOO", col.lab = "blue")
+    plot(x, y, type = "l", main = "LOO для взвешенного KNN", xlab = "K", ylab = "LOO", col.lab = "blue")
 
     k = which.min(loo)
     k.loo = round(loo[k], 4)
@@ -56,7 +56,7 @@ mc.draw.LOO.KNN = function(points, classes) {
 }
 
 #Отрисовка карты классификации
-mc.draw.KNN = function(points, classes, colors, k) {
+mc.draw.kwKNN = function(points, classes, colors, k) {
     uniqueClasses = unique(classes)
     names(colors) = uniqueClasses
 
@@ -81,7 +81,7 @@ mc.draw.KNN = function(points, classes, colors, k) {
 
             distances = mc.distances(points, u)
             names(distances) = classes
-            classified = mc.KNN(sort(distances), k)
+            classified = mc.kwKNN(sort(distances), k)
 
             #рисуем новую классифицированную точку
             points(u[1], u[2], col = colors[classified], pch = 21) #u
@@ -97,6 +97,6 @@ test = function() {
     petalNames = iris[, 5]
 
     par(mfrow = c(1, 2))
-    k = mc.draw.LOO.KNN(petals, petalNames)
-    mc.draw.KNN(petals, petalNames, colors = c("red", "green3", "blue"), k = k)
+    k = mc.draw.LOO.kwKNN(petals, petalNames)
+    mc.draw.kwKNN(petals, petalNames, colors = c("red", "green3", "blue"), k = k)
 }
