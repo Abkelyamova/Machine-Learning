@@ -1,18 +1,18 @@
-#вспомогательные функции
-mc.dist = function(p1, p2) sqrt(sum((p1 - p2) ^ 2)) #Евклидово расстояние
-mc.distances = function(points, u) apply(points, 1, mc.dist, u) #Расстояние от всех points до точки u
-mc.sumByClass = function(class, arr) sum(arr[names(arr) == class]) #Суммирует значения каждого класса
+п»ї#РІСЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Рµ С„СѓРЅРєС†РёРё
+mc.dist = function(p1, p2) sqrt(sum((p1 - p2) ^ 2)) #Р•РІРєР»РёРґРѕРІРѕ СЂР°СЃСЃС‚РѕСЏРЅРёРµ
+mc.distances = function(points, u) apply(points, 1, mc.dist, u) #Р Р°СЃСЃС‚РѕСЏРЅРёРµ РѕС‚ РІСЃРµС… points РґРѕ С‚РѕС‡РєРё u
+mc.sumByClass = function(class, arr) sum(arr[names(arr) == class]) #РЎСѓРјРјРёСЂСѓРµС‚ Р·РЅР°С‡РµРЅРёСЏ РєР°Р¶РґРѕРіРѕ РєР»Р°СЃСЃР°
 mc.contains = function(points, u) any(apply(points, 1, function(v) all(v == u)))
 
-plot.limits = function(arr, deviation = 0) c(min(arr) - deviation, max(arr) + deviation) #минимальное и максимальное значения с отклонением
+plot.limits = function(arr, deviation = 0) c(min(arr) - deviation, max(arr) + deviation) #РјРёРЅРёРјР°Р»СЊРЅРѕРµ Рё РјР°РєСЃРёРјР°Р»СЊРЅРѕРµ Р·РЅР°С‡РµРЅРёСЏ СЃ РѕС‚РєР»РѕРЅРµРЅРёРµРј
 
-#Ядра
-mc.kernel.R = function(r) 0.5 * (abs(r) <= 1) #прямоугольное
-mc.kernel.T = function(r) (1 - abs(r)) * (abs(r) <= 1) #треугольное
-mc.kernel.Q = function(r) (15 / 16) * (1 - r ^ 2) ^ 2 * (abs(r) <= 1) #квартическое
-mc.kernel.E = function(r)(3 / 4) * (1 - r ^ 2) * (abs(r) <= 1) #епанечниково
+#РЇРґСЂР°
+mc.kernel.R = function(r) 0.5 * (abs(r) <= 1) #РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРѕРµ
+mc.kernel.T = function(r) (1 - abs(r)) * (abs(r) <= 1) #С‚СЂРµСѓРіРѕР»СЊРЅРѕРµ
+mc.kernel.Q = function(r) (15 / 16) * (1 - r ^ 2) ^ 2 * (abs(r) <= 1) #РєРІР°СЂС‚РёС‡РµСЃРєРѕРµ
+mc.kernel.E = function(r)(3 / 4) * (1 - r ^ 2) * (abs(r) <= 1) #РµРїР°РЅРµС‡РЅРёРєРѕРІРѕ
 
-mc.PW.kernel = mc.kernel.R #использовать ЭТО ядро
+mc.PW.kernel = mc.kernel.R #РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ Р­РўРћ СЏРґСЂРѕ
 
 #PW
 mc.PW = function(distances, u, h) {
@@ -21,7 +21,7 @@ mc.PW = function(distances, u, h) {
 
     weightsByClass = sapply(classes, mc.sumByClass, weights)
 
-    if (max(weightsByClass) == 0) return("") #ни одна точка не попала в окно
+    if (max(weightsByClass) == 0) return("") #РЅРё РѕРґРЅР° С‚РѕС‡РєР° РЅРµ РїРѕРїР°Р»Р° РІ РѕРєРЅРѕ
 
     return(names(which.max(weightsByClass)))
 }
@@ -47,14 +47,14 @@ mc.LOO.PW = function(points, classes, hValues) {
     loo = loo / n
 }
 
-#Отрисовка LOO
+#РћС‚СЂРёСЃРѕРІРєР° LOO
 mc.draw.LOO.PW = function(points, classes, hValues) {
     loo = mc.LOO.PW(points, classes, hValues)
 
     x = hValues
     y = loo
 
-    plot(x, y, type = "l", main = "LOO для Парзеновского окна (PW)", xlab = "h", ylab = "LOO", col.lab = "blue")
+    plot(x, y, type = "l", main = "LOO РґР»СЏ РџР°СЂР·РµРЅРѕРІСЃРєРѕРіРѕ РѕРєРЅР° (PW)", xlab = "h", ylab = "LOO", col.lab = "blue")
 
     h = hValues[which.min(loo)]
     h.loo = round(loo[which.min(loo)], 4)
@@ -66,7 +66,7 @@ mc.draw.LOO.PW = function(points, classes, hValues) {
     return(h)
 }
 
-#Отрисовка карты классификации
+#РћС‚СЂРёСЃРѕРІРєР° РєР°СЂС‚С‹ РєР»Р°СЃСЃРёС„РёРєР°С†РёРё
 mc.draw.PW = function(points, classes, colors, h) {
     uniqueClasses = unique(classes)
     names(colors) = uniqueClasses
@@ -75,34 +75,34 @@ mc.draw.PW = function(points, classes, colors, h) {
     y = points[, 2]
     xlim = plot.limits(x, 0.3)
     ylim = plot.limits(y, 0.3)
-    plot(points, bg = colors[classes], pch = 21, asp = 1, xlim = xlim, ylim = ylim, main = "Карта классификации PW", col.lab = "blue") #Рисуем известные точки
+    plot(points, bg = colors[classes], pch = 21, asp = 1, xlim = xlim, ylim = ylim, main = "РљР°СЂС‚Р° РєР»Р°СЃСЃРёС„РёРєР°С†РёРё PW", col.lab = "blue") #Р РёСЃСѓРµРј РёР·РІРµСЃС‚РЅС‹Рµ С‚РѕС‡РєРё
 
-    #Классифицируем точки
+    #РљР»Р°СЃСЃРёС„РёС†РёСЂСѓРµРј С‚РѕС‡РєРё
     step = 0.1
     ox = seq(xlim[1], xlim[2], step)
     oy = seq(ylim[1], ylim[2], step)
 
     for (x in ox) {
         for (y in oy) {
-            x = round(x, 1) #избегаем случаев 0.1 + 0.2 = 0.3000000004
-            y = round(y, 1) #избегаем случаев 0.1 + 0.2 = 0.3000000004
+            x = round(x, 1) #РёР·Р±РµРіР°РµРј СЃР»СѓС‡Р°РµРІ 0.1 + 0.2 = 0.3000000004
+            y = round(y, 1) #РёР·Р±РµРіР°РµРј СЃР»СѓС‡Р°РµРІ 0.1 + 0.2 = 0.3000000004
             u = c(x, y)
 
-            if (mc.contains(points, u)) next #не классифицировать известные точки
+            if (mc.contains(points, u)) next #РЅРµ РєР»Р°СЃСЃРёС„РёС†РёСЂРѕРІР°С‚СЊ РёР·РІРµСЃС‚РЅС‹Рµ С‚РѕС‡РєРё
 
             distances = mc.distances(points, u)
             names(distances) = classes
             classified = mc.PW(distances, u, h)
 
-            #рисуем новую классифицированную точку
+            #СЂРёСЃСѓРµРј РЅРѕРІСѓСЋ РєР»Р°СЃСЃРёС„РёС†РёСЂРѕРІР°РЅРЅСѓСЋ С‚РѕС‡РєСѓ
             points(u[1], u[2], col = colors[classified], pch = 21) #u
         }
     }
 
-    legend("topright", legend = uniqueClasses, pch = 21, pt.bg = colors[uniqueClasses], xpd = T) #добавим легенду для большей ясности
+    legend("topright", legend = uniqueClasses, pch = 21, pt.bg = colors[uniqueClasses], xpd = T) #РґРѕР±Р°РІРёРј Р»РµРіРµРЅРґСѓ РґР»СЏ Р±РѕР»СЊС€РµР№ СЏСЃРЅРѕСЃС‚Рё
 }
 
-#тестируем программу
+#С‚РµСЃС‚РёСЂСѓРµРј РїСЂРѕРіСЂР°РјРјСѓ
 test = function() {
     petals = iris[, 3:4]
     petalNames = iris[, 5]

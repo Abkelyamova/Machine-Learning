@@ -1,10 +1,10 @@
-#вспомогательные функции
-mc.dist = function(p1, p2) sqrt(sum((p1 - p2) ^ 2)) #Евклидово расстояние
-mc.distances = function(points, u) apply(points, 1, mc.dist, u) #Расстояние от всех points до точки u
-mc.sumByClass = function(class, arr) sum(arr[names(arr) == class]) #Суммирует значения каждого класса
+п»ї#РІСЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Рµ С„СѓРЅРєС†РёРё
+mc.dist = function(p1, p2) sqrt(sum((p1 - p2) ^ 2)) #Р•РІРєР»РёРґРѕРІРѕ СЂР°СЃСЃС‚РѕСЏРЅРёРµ
+mc.distances = function(points, u) apply(points, 1, mc.dist, u) #Р Р°СЃСЃС‚РѕСЏРЅРёРµ РѕС‚ РІСЃРµС… points РґРѕ С‚РѕС‡РєРё u
+mc.sumByClass = function(class, arr) sum(arr[names(arr) == class]) #РЎСѓРјРјРёСЂСѓРµС‚ Р·РЅР°С‡РµРЅРёСЏ РєР°Р¶РґРѕРіРѕ РєР»Р°СЃСЃР°
 mc.contains = function(points, u) any(apply(points, 1, function(v) all(v == u)))
 
-plot.limits = function(arr, deviation = 0) c(min(arr) - deviation, max(arr) + deviation) #минимальное и максимальное значения с отклонением
+plot.limits = function(arr, deviation = 0) c(min(arr) - deviation, max(arr) + deviation) #РјРёРЅРёРјР°Р»СЊРЅРѕРµ Рё РјР°РєСЃРёРјР°Р»СЊРЅРѕРµ Р·РЅР°С‡РµРЅРёСЏ СЃ РѕС‚РєР»РѕРЅРµРЅРёРµРј
 
 #kwKNN
 mc.KNN.w = function(i, k) +(i <= k) * (k + 1 - i) / k
@@ -22,7 +22,7 @@ mc.KNN = function(sortedDistances, k) {
 #LOO
 mc.LOO.KNN = function(points, classes) {
     n = dim(points)[1]
-    loo = rep(0, n-1) #n-1, потому что один элемент всегда будет отсутствовать в выборке
+    loo = rep(0, n-1) #n-1, РїРѕС‚РѕРјСѓ С‡С‚Рѕ РѕРґРёРЅ СЌР»РµРјРµРЅС‚ РІСЃРµРіРґР° Р±СѓРґРµС‚ РѕС‚СЃСѓС‚СЃС‚РІРѕРІР°С‚СЊ РІ РІС‹Р±РѕСЂРєРµ
 
     for (i in 1:n) {
         u = points[i,]
@@ -41,14 +41,14 @@ mc.LOO.KNN = function(points, classes) {
     loo = loo / n
 }
 
-#Отрисовка LOO
+#РћС‚СЂРёСЃРѕРІРєР° LOO
 mc.draw.LOO.KNN = function(points, classes) {
     loo = mc.LOO.KNN(points, classes)
 
     x = 1:length(loo)
     y = loo
 
-    plot(x, y, type = "l", main = "LOO для взвешанного KNN", xlab = "K", ylab = "LOO", col.lab = "blue")
+    plot(x, y, type = "l", main = "LOO РґР»СЏ РІР·РІРµС€Р°РЅРЅРѕРіРѕ KNN", xlab = "K", ylab = "LOO", col.lab = "blue")
 
     k = which.min(loo)
     k.loo = round(loo[k], 4)
@@ -60,7 +60,7 @@ mc.draw.LOO.KNN = function(points, classes) {
     return(k)
 }
 
-#Отрисовка карты классификации
+#РћС‚СЂРёСЃРѕРІРєР° РєР°СЂС‚С‹ РєР»Р°СЃСЃРёС„РёРєР°С†РёРё
 mc.draw.KNN = function(points, classes, colors, k) {
     uniqueClasses = unique(classes)
     names(colors) = uniqueClasses
@@ -69,34 +69,34 @@ mc.draw.KNN = function(points, classes, colors, k) {
     y = points[, 2]
     xlim = plot.limits(x, 0.3)
     ylim = plot.limits(y, 0.3)
-    plot(points, bg = colors[classes], pch = 21, asp = 1, xlim = xlim, ylim = ylim, main = "Карта классификации взвешанного KNN", col.lab = "blue") #Рисуем известные точки
+    plot(points, bg = colors[classes], pch = 21, asp = 1, xlim = xlim, ylim = ylim, main = "РљР°СЂС‚Р° РєР»Р°СЃСЃРёС„РёРєР°С†РёРё РІР·РІРµС€Р°РЅРЅРѕРіРѕ KNN", col.lab = "blue") #Р РёСЃСѓРµРј РёР·РІРµСЃС‚РЅС‹Рµ С‚РѕС‡РєРё
 
-    #Классифицируем точки
+    #РљР»Р°СЃСЃРёС„РёС†РёСЂСѓРµРј С‚РѕС‡РєРё
     step = 0.1
     ox = seq(xlim[1], xlim[2], step)
     oy = seq(ylim[1], ylim[2], step)
 
     for (x in ox) {
         for (y in oy) {
-            x = round(x, 1) #избегаем случаев 0.1 + 0.2 = 0.3000000004
-            y = round(y, 1) #избегаем случаев 0.1 + 0.2 = 0.3000000004
+            x = round(x, 1) #РёР·Р±РµРіР°РµРј СЃР»СѓС‡Р°РµРІ 0.1 + 0.2 = 0.3000000004
+            y = round(y, 1) #РёР·Р±РµРіР°РµРј СЃР»СѓС‡Р°РµРІ 0.1 + 0.2 = 0.3000000004
             u = c(x, y)
 
-            if (mc.contains(points, u)) next #не классифицировать известные точки
+            if (mc.contains(points, u)) next #РЅРµ РєР»Р°СЃСЃРёС„РёС†РёСЂРѕРІР°С‚СЊ РёР·РІРµСЃС‚РЅС‹Рµ С‚РѕС‡РєРё
 
             distances = mc.distances(points, u)
             names(distances) = classes
             classified = mc.KNN(sort(distances), k)
 
-            #рисуем новую классифицированную точку
+            #СЂРёСЃСѓРµРј РЅРѕРІСѓСЋ РєР»Р°СЃСЃРёС„РёС†РёСЂРѕРІР°РЅРЅСѓСЋ С‚РѕС‡РєСѓ
             points(u[1], u[2], col = colors[classified], pch = 21) #u
         }
     }
 
-    legend("topright", legend = uniqueClasses, pch = 21, pt.bg = colors[uniqueClasses], xpd = T) #добавим легенду для большей ясности
+    legend("topright", legend = uniqueClasses, pch = 21, pt.bg = colors[uniqueClasses], xpd = T) #РґРѕР±Р°РІРёРј Р»РµРіРµРЅРґСѓ РґР»СЏ Р±РѕР»СЊС€РµР№ СЏСЃРЅРѕСЃС‚Рё
 }
 
-#тестируем программу
+#С‚РµСЃС‚РёСЂСѓРµРј РїСЂРѕРіСЂР°РјРјСѓ
 test = function() {
     petals = iris[, 3:4]
     petalNames = iris[, 5]
