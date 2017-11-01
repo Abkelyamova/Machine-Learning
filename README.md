@@ -80,7 +80,7 @@ __Минусы:__
 ![](http://latex.codecogs.com/svg.latex?%5Clarge%20w%28i%29%20%3D%20%5Cfrac%7Bk%20&plus;%201%20-%20i%7D%7Bk%7D)
 
 Реализация алгоритма доступна по
-[ссылке](oRRRlova/KwKNN.R)
+[ссылке](oRRRlova/kwKNN.R)
 
 #### Оценка алгоритма
 
