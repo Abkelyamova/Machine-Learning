@@ -1,7 +1,7 @@
 #вспомогательные функции
 source(file = "help.R", encoding = "UTF-8")
 
-mc.PW.kernel = mc.kernel.T #использовать ЭТО ядро
+mc.PW.kernel = mc.kernel.E #использовать ЭТО ядро
 
 #PW
 mc.PW = function(distances, u, h) {
