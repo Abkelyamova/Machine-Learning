@@ -10,3 +10,4 @@ mc.kernel.R = function(r) 0.5 * (abs(r) <= 1) #прямоугольное
 mc.kernel.T = function(r)(1 - abs(r)) * (abs(r) <= 1) #треугольное
 mc.kernel.Q = function(r)(15 / 16) * (1 - r ^ 2) ^ 2 * (abs(r) <= 1) #квартическое
 mc.kernel.E = function(r)(3 / 4) * (1 - r ^ 2) * (abs(r) <= 1) #епанечниково
+mc.kernel.G = function(r) dnorm(r) #гауссовское

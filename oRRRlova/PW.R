@@ -1,7 +1,7 @@
 #вспомогательные функции
 source(file = "help.R", encoding = "UTF-8")
 
-mc.PW.kernel = mc.kernel.E #использовать ЭТО ядро
+mc.PW.kernel = mc.kernel.G #использовать ЭТО ядро
 
 #PW
 mc.PW = function(distances, u, h) {
@@ -96,7 +96,7 @@ test = function() {
     petals = iris[, 3:4]
     petalNames = iris[, 5]
 
-    par(mfrow = c(1, 2))
+    par(mfrow = c(1, 2), xpd = T)
     h = mc.draw.LOO.PW(petals, petalNames, hValues = seq(0.1, 2, 0.005))
     mc.draw.PW(petals, petalNames, colors = c("red", "green3", "blue"), h = h)
 }
