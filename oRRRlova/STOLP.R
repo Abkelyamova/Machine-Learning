@@ -18,7 +18,7 @@ mc.STOLP.w = function(sortedDistances, indecies, k) {
 
 #отступ
 mc.STOLP.M = function(points, classes, u, class) {
-    k = 4
+    k = 30
     dist = mc.distances(points, u)
     names(dist) = classes
     sortedDistances = sort(dist)
@@ -100,7 +100,28 @@ mc.draw.STOLP = function(points, classes, etalone, etaloneClasses, colors) {
     names(colors) = uniqueClasses
 
     plot(points, col = colors[classes], pch = 21, asp = 1, main = "STOLP для взвешанного KNN")
-    points(etalone, bg = colors[etaloneClasses], pch = 21)
+    points(etalone, bg = colors[etaloneClasses], pch = 21, col.lab = "blue")
+}
+
+mc.draw.STOLP.M = function(points, classes) {
+    #посчитаем отступ для каждого объекта
+    n = length(classes)
+    margins = rep(0, n)
+    for (i in 1:n)
+        margins[i] = mc.STOLP.M(points, classes, points[i,], classes[i])
+    margins = sort(margins)
+
+    #Нарисуем график
+    colors = colorRampPalette(c("darkred", "red", "yellow", "green", "darkgreen"))
+
+    plot.polygonGradient(1:n, margins, colors)
+    lines(1:n, margins, lwd = 3, col = "blue")
+    lines(c(1, n), c(0, 0), col = "grey", lwd = 2)
+    title(main = "Отступы для взвешенного KNN при k = 30", ylab = "Отступ (Мargin)", xlab = "Выборка", col.lab = "blue")
+
+    ox = seq(0, 150, 5)
+    axis(side = 1, at = ox)
+    sapply(ox, function(x) abline(v = x, col = "grey", lty = 3))
 }
 
 #Тестируем
@@ -114,5 +135,14 @@ test = function() {
     #draw STOLP
     par(mfrow = c(1, 2), xpd = NA)
     mc.draw.STOLP(points, classes, res$etalone, res$etaloneClasses, c("red", "green3", "blue"))
-    mc.draw.kwKNN(res$etalone, res$etaloneClasses, c("red", "green3", "blue"), k = 4)
+    mc.draw.kwKNN(res$etalone, res$etaloneClasses, c("red", "green3", "blue"), k = 30)
+}
+
+testM = function() {
+    points = iris[, 3:4]
+    classes = iris[, 5]
+    classes = as.array(levels(classes))[classes] #преобразуем в массив
+
+    par(mfrow = c(1, 1), xpd = F)
+    mc.draw.STOLP.M(points, classes)
 }
