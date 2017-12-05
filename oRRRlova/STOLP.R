@@ -34,18 +34,28 @@ mc.STOLP.M = function(points, classes, u, class) {
     m1 - m2
 }
 
-mc.STOLP = function(points, classes, noise, mistakes) {
+mc.draw.STOLP.noises = function(margins) {
+    margins.negative = margins[which(margins < 0)]
+    margins.negative = sort(margins.negative)
+    n = length(margins.negative)
+    margins.diff = margins.negative[1:(n - 1)] - margins.negative[2:n]
+    noise.bound = min(margins.diff)[1]
+    which(margins < noise.bound)
+}
+
+mc.STOLP = function(points, classes, mistakes) {
     n = length(classes)
 
-    #Удалив все вершины с отступом < noise
-    for (i in 1:n) {
-        if (i > n) break
-        if (mc.STOLP.M(points, classes, points[i, ], classes[i]) < noise) {
-            points = points[-i,]
-            classes = classes[-i]
-            n = n - 1
-        }
-    }
+    #Удаляет все шумовые объекты
+    margins = rep(0, n)
+    for (i in 1:n)
+        margins[i] = mc.STOLP.M(points, classes, points[i,], classes[i])
+    noises = mc.draw.STOLP.noises(margins)
+    print(noises)
+    print(points[noises,])
+    n = n - length(noises)
+    points = points[-noises,]
+    classes = classes[-noises]
 
     #Выбираем лучшего представителя из каждого класса
     etalone = data.frame()
@@ -122,6 +132,11 @@ mc.draw.STOLP.M = function(points, classes) {
     ox = seq(0, 150, 5)
     axis(side = 1, at = ox)
     sapply(ox, function(x) abline(v = x, col = "grey", lty = 3))
+
+    #Отметим выбросы
+    noise.index = mc.draw.STOLP.noise(margins)
+    noise.len = length(noise.index)
+    points(noise.index, margins[noise.index], pch = 21, col = "darkred", bg = "darkred")
 }
 
 #Тестируем
@@ -130,7 +145,7 @@ test = function() {
     classes = iris[, 5]
     classes = as.array(levels(classes))[classes] #преобразуем в массив
 
-    res = mc.STOLP(points, classes, -1, 3)
+    res = mc.STOLP(points, classes, 3)
 
     #draw STOLP
     par(mfrow = c(1, 2), xpd = NA)
