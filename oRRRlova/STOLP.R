@@ -39,8 +39,12 @@ mc.draw.STOLP.noises = function(margins) {
     margins.negative = sort(margins.negative)
     n = length(margins.negative)
     margins.diff = margins.negative[1:(n - 1)] - margins.negative[2:n]
-    noise.bound = min(margins.diff)[1]
-    which(margins < noise.bound)
+    noise.i = which.min(margins.diff)
+    noise.i = noise.i + 1
+    noise.bound = margins.negative[noise.i]
+    print(noise.bound)
+
+    which(margins <= noise.bound)
 }
 
 mc.STOLP = function(points, classes, mistakes) {
@@ -134,7 +138,7 @@ mc.draw.STOLP.M = function(points, classes) {
     sapply(ox, function(x) abline(v = x, col = "grey", lty = 3))
 
     #Отметим выбросы
-    noise.index = mc.draw.STOLP.noise(margins)
+    noise.index = mc.draw.STOLP.noises(margins)
     noise.len = length(noise.index)
     points(noise.index, margins[noise.index], pch = 21, col = "darkred", bg = "darkred")
 }
