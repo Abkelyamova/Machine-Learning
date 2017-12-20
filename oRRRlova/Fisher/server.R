@@ -81,8 +81,8 @@ server = function(input, output) {
     }
 
     getLDFCoeffs = function(covar, mu1, mu2) {
-        invCovar <- solve(covar)
-        alpha <- invCovar %*% t(mu1 - mu2)
+        invCovar = solve(covar)
+        alpha = invCovar %*% t(mu1 - mu2)
         beta = (mu1 %*% invCovar %*% t(mu1) - mu2 %*% invCovar %*% t(mu2)) / 2
         list("alpha" = alpha, "beta" = beta)
     }
