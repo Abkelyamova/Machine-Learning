@@ -19,7 +19,7 @@ makeCovMatrixRow = function(id, min, max, values) {
             fluidRow(
                 column(6, makeSlider(paste0(id, "11"), min, max, values[1])),
                 column(6, makeSlider(paste0(id, "12"), min, max, values[2])),
-                column(6, makeSlider(paste0(id, "21"), min, max, values[3])),
+                column(6, NULL),
                 column(6, makeSlider(paste0(id, "22"), min, max, values[4]))
             )
         )

@@ -9,7 +9,7 @@ norma = function(x, y, mu, sigma) {
 server = function(input, output) {
     output$plot = renderPlot({
         mu = matrix(c(0, 0), 1, 2)
-        sigma = matrix(c(input$cov11, input$cov12, input$cov21, input$cov22), 2, 2)
+        sigma = matrix(c(input$cov11, input$cov12, input$cov12, input$cov22), 2, 2)
 
         if (det(sigma) <= 0) {
             output$covMessage = renderText({
