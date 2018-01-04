@@ -71,14 +71,14 @@ server = function(input, output) {
     }
 
     # Стохастический градиент
-    stoh = function(xl, classes, L, newW, iterId) {
+    stoh = function(xl, classes, L, updateRule, iterId) {
         #изначальная настройка алгоритма
         rows = dim(xl)[1]
         cols = dim(xl)[2]
         w = runif(cols, -1 / (2 * cols), 1 / (2 * cols))
         lambda = 1 / rows
 
-        # initialize Q
+        # начальное Q
         Q = 0
         for (i in 1:rows) {
             margin = sum(w * xl[i,]) * classes[i]
@@ -115,7 +115,7 @@ server = function(input, output) {
 
             # обновляем веса
             eta = 1 / iter
-            w = newW(w, eta, xi, yi)
+            w = updateRule(w, eta, xi, yi)
 
             # новое Q
             Q = (1 - lambda) * Q + lambda * error
