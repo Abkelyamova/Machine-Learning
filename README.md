@@ -858,3 +858,31 @@ stoh = function(xl, classes, L, updateRule) {
 функцию потерь
 ![](http://latex.codecogs.com/svg.latex?%5Cmathcal%7BL%7D)
 и правило обновления весов.
+
+#### Адаптивный линейный элемент (adaline)
+
+Имеет _квадратичную функцию потерь_
+![](http://latex.codecogs.com/svg.latex?%5Cmathcal%7BL%7D%28M%29%3D%28M-1%29%5E2%3D%28%5Clangle%20w%2Cx_i%20%5Crangle%20y_i-1%29%5E2)
+и _дельта-правило_ правило обновления весов
+![](http://latex.codecogs.com/svg.latex?w%3Dw-%5Ceta%28%5Clangle%20w%2Cx_i%20%5Crangle-y_i%29x_i).
+
+#### Персептрон Розенблатта
+
+Имеет _кусочно-линейную функцию потерь_
+![](http://latex.codecogs.com/svg.latex?%5Cmathcal%7BL%7D%3D%28-M%29_&plus;%3D%5Cmax%28-M%2C0%29)
+и _правило Хебба_ для обновления весов
+![](http://latex.codecogs.com/svg.latex?%5Ctext%7Bif%20%7D%5Clangle%20w%2Cx_i%20%5Crangle%20y_i%3C0%20%5Ctext%7B%20then%20%7D%20w%3A%3Dw&plus;%5Ceta%20x_iy_i).
+
+#### Логистическая регрессия
+
+Также является __оптимальный байесовским классификатором__ из-за своих довольно
+сильных вероятностных предположений.
+
+Имеет _логистическую функцию потерь_
+![](http://latex.codecogs.com/svg.latex?%5Cmathcal%7BL%7D%28M%29%20%3D%20%5Clog_2%281%20&plus;%20e%5E%7B-M%7D%29)
+и _логистическое_ правило обновления весов
+![](http://latex.codecogs.com/svg.latex?w%20%3A%3D%20w&plus;%5Ceta%20y_ix_i%5Csigma%28-%5Clangle%20w%2Cx_i%20%5Crangle%20y_i%29)
+, где
+![](http://latex.codecogs.com/svg.latex?%5Csigma%28z%29%3D%5Cfrac%7B1%7D%7B1&plus;e%5E%7B-z%7D%7D)
+– _сигмоидная функция_.
+
