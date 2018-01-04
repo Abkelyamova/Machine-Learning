@@ -551,6 +551,7 @@ _разделяющей поверхности_.
 
 ![](IMG/line3.png)
 
+Саму программу можно посмотреть здесь: [shinyapps.io](https://orlova-tatiana.shinyapps.io/level/)
 
 ### Подстановочный алгоритм (Plug-in)
 
